@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { gql, graphql } from 'react-apollo'
 
 const mapStateToProps = state => {
   return {
@@ -7,15 +8,34 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {}
+const pizzaSizesQuery = gql`
+  query test {
+    pizzaSizes {
+      name
+      maxToppings
+      basePrice
+    }
+  }
+`
+
+const Cart = ({ cart, data }) => {
+  return (
+    <div>
+      <div>
+        Cart: {cart}
+      </div>
+      <div>
+        Pizza Sizes:{' '}
+        {data.loading
+          ? '...'
+          : data.pizzaSizes.map(pizzaSize => pizzaSize.name).join(', ')}
+      </div>
+    </div>
+  )
 }
 
-const Cart = ({ cart }) =>
-  <h1>
-    Cart: {cart}
-  </h1>
+const CartWithData = graphql(pizzaSizesQuery)(Cart) // adds the "data" prop
 
-const ConnectedCart = connect(mapStateToProps, mapDispatchToProps)(Cart)
+const CartWithDataAndState = connect(mapStateToProps)(CartWithData)
 
-export default ConnectedCart
+export default CartWithDataAndState
