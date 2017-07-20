@@ -9,7 +9,7 @@ const mapStateToProps = state => {
 }
 
 const pizzaSizesQuery = gql`
-  query test {
+  query {
     pizzaSizes {
       name
       maxToppings
