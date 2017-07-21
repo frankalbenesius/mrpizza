@@ -27,7 +27,7 @@ const Price = glamorous.span({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onPizzaSubmit: () => dispatch(addPizza('small', ['test'])),
+    addPizzaToCart: pizza => dispatch(addPizza(pizza)),
   }
 }
 
@@ -117,7 +117,8 @@ class OrderForm extends React.Component {
         .filter(t => t.selected)
         .map(t => t.name),
     }
-    console.log('pizza', pizza)
+
+    this.props.addPizzaToCart(pizza)
 
     this.setState(resetPizzas)
   }
@@ -157,7 +158,7 @@ class OrderForm extends React.Component {
                 <label htmlFor={`size_${pizzaSize.name}`}>
                   {pizzaSize.name}
                   <Price>
-                    ${pizzaSize.basePrice}
+                    ${pizzaSize.basePrice.toFixed(2)}
                   </Price>
                 </label>
               </div>
@@ -187,7 +188,7 @@ class OrderForm extends React.Component {
                 >
                   {topping.name}
                   <Price>
-                    +${topping.price}
+                    ${topping.price.toFixed(2)}
                   </Price>
                 </label>
               </div>

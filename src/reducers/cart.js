@@ -13,29 +13,23 @@ function cart(state = [], action) {
     }
     case REMOVE_PIZZA: {
       const pizzaIndex = action.payload
-      return [
-        ...state.slice(0, pizzaIndex),
-        ...state.items.slice(pizzaIndex + 1),
-      ]
+      return [...state.slice(0, pizzaIndex), ...state.slice(pizzaIndex + 1)]
     }
     default:
       return state
   }
 }
 
-export const addPizza = (size, toppings) => {
+export const addPizza = pizza => {
   return {
     type: ADD_PIZZA,
-    payload: {
-      size,
-      toppings,
-    },
+    payload: pizza,
   }
 }
 
 export const removePizza = index => {
   return {
-    type: ADD_PIZZA,
+    type: REMOVE_PIZZA,
     payload: index,
   }
 }
