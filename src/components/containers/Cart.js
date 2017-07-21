@@ -12,8 +12,15 @@ const pizzaSizesQuery = gql`
   query {
     pizzaSizes {
       name
-      maxToppings
+      maxToppings #only form needs to know this
       basePrice
+      toppings {
+        defaultSelected #only form needs to know this
+        topping {
+          name
+          price
+        }
+      }
     }
   }
 `
@@ -21,15 +28,7 @@ const pizzaSizesQuery = gql`
 const Cart = ({ cart, data }) => {
   return (
     <div>
-      <div>
-        Cart: {cart}
-      </div>
-      <div>
-        Pizza Sizes:{' '}
-        {data.loading
-          ? '...'
-          : data.pizzaSizes.map(pizzaSize => pizzaSize.name).join(', ')}
-      </div>
+      Pizzas in Cart: {cart.length}
     </div>
   )
 }
