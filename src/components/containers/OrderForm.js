@@ -5,6 +5,11 @@ import glamorous from 'glamorous'
 
 import { addPizza } from '../../reducers/cart'
 
+const gray = '#bbb'
+
+// these presentational components could be refactored to their own
+// folders in ../presentationals.
+
 const SubHeader = glamorous.h2({
   fontSize: '1rem',
 })
@@ -18,7 +23,6 @@ const SubmitButton = glamorous.input({
   fontSize: '1rem',
 })
 
-const gray = '#bbb'
 const Price = glamorous.span({
   color: gray,
   fontStyle: 'italic',
@@ -48,12 +52,15 @@ const pizzaSizesQuery = gql`
   }
 `
 
+// setState function for changing the selected pizza size
 const setSize = size => {
   return (state, props) => ({
     selectedSize: size,
   })
 }
 
+// setState function resetting to the default pizza configurations
+// used on load and on submit
 const resetPizzas = (state, props) => ({
   selectedSize: props.data.pizzaSizes[0].name,
   maxToppings: props.data.pizzaSizes.reduce((acc, size) => {
@@ -72,6 +79,7 @@ const resetPizzas = (state, props) => ({
   }, {}),
 })
 
+// setState function used to toggle individual toppings in our pizza arrays
 const toggleTopping = (size, toppingName) => {
   return (state, props) => ({
     pizzas: {
@@ -97,6 +105,7 @@ class OrderForm extends React.Component {
   }
   componentWillReceiveProps(nextProps) {
     if (!this.state.selectedSize && nextProps.data.pizzaSizes) {
+      // graphql data received, safe to begin using order form
       this.setState(resetPizzas)
     }
   }
@@ -201,8 +210,10 @@ class OrderForm extends React.Component {
   }
 }
 
-const OrderFormWithData = graphql(pizzaSizesQuery)(OrderForm) // adds the "data" prop
+// connect OrderForm with the apollo HOC
+const OrderFormWithData = graphql(pizzaSizesQuery)(OrderForm)
 
+// connect OrderForm with the redux HOC
 const OrderFormWithDataAndState = connect(() => ({}), mapDispatchToProps)(
   OrderFormWithData,
 )

@@ -1,5 +1,6 @@
 import { ADD_PIZZA, REMOVE_PIZZA } from './actions'
 
+// reducer
 function cart(state = [], action) {
   switch (action.type) {
     case ADD_PIZZA: {
@@ -20,6 +21,9 @@ function cart(state = [], action) {
   }
 }
 
+export default cart
+
+// action creators
 export const addPizza = pizza => {
   return {
     type: ADD_PIZZA,
@@ -34,4 +38,5 @@ export const removePizza = index => {
   }
 }
 
-export default cart
+// selector
+export const getCart = state => state.cart
